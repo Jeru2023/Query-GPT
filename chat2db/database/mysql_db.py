@@ -8,7 +8,6 @@ from urllib.parse import quote_plus as urlquote
 class MySQLDB:
     def __init__(self, config_path='./chat2db/config/sphinx.config'):
         self.config_path = config_path
-        
         self.config = cp.ConfigParser()
         self.config.read(config_path, encoding='utf-8-sig')
 
