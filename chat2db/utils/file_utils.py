@@ -2,6 +2,7 @@
 File system utils.
 """
 import os
+import collections
 
 def is_sequence(obj):
     """
@@ -42,7 +43,7 @@ def f_join(*fpaths):
 	
 	
 def load_text(*fpaths, by_lines=False):
-    with open(f_join(*fpaths), "r") as fp:
+    with open(f_join(*fpaths), "r", encoding="utf-8") as fp:
         if by_lines:
             return fp.readlines()
         else:
