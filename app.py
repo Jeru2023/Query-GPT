@@ -5,7 +5,6 @@ import os
 from chat2db.prompts import load_prompt
 
 
-
 st.title("Query GPT")
 
 openai.api_version = "2023-05-15"

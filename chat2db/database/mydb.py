@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 import configparser as cp
 
 class MyDB:
-    def __init__(self, config_path='../config/sphinx.config'):
+    def __init__(self, config_path='./chat2db/config/sphinx.config'):
         self.config_path = config_path
         
         self.config = cp.ConfigParser()
