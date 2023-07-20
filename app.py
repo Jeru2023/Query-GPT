@@ -2,6 +2,10 @@ import streamlit as st
 import openai
 import os
 
+from chat2db.prompts import load_prompt
+
+
+
 st.title("Query GPT")
 
 openai.api_version = "2023-05-15"
@@ -16,7 +20,7 @@ openai.api_base = st.secrets["OPENAI_API_BASE"]
 
 if 'messages' not in st.session_state:
     st.session_state['messages'] = [
-        {"role": "system", "content": "You are a helpful assistant."}
+        {"role": "system", "content": load_prompt("router")}
     ]
 
 # Display chat messages from history on app rerun
