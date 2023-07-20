@@ -2,7 +2,7 @@ import configparser
 import json
 import os
 
-from db_connector import DbConnector
+from  .db_connector import DbConnector
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 

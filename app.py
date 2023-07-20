@@ -1,8 +1,9 @@
 import streamlit as st
 import openai
-import os
+import json
 
 from chat2db.chat.azure import Azure
+from chat2db.database.channel import Channel
 from chat2db.prompts import load_prompt
 
 st.title("Query GPT")
@@ -38,13 +39,30 @@ if prompt := st.chat_input("What's your question?"):
     with st.chat_message("assistant"):
         ### print out the origin question
         st.markdown(f"Your question is: **:blue[{prompt}]**")
-
         message_placeholder = st.empty()
         full_response = ""
     azure = Azure(st.secrets["OPENAI_API_KEY"], st.secrets["OPENAI_API_BASE"], st.secrets["ENGINE"])
     azure.azure_ask(st.session_state.messages)
+    response = azure.azure_ask(st.session_state.messages)
+    message_placeholder.markdown(full_response + "▌")
+
     for response in azure.azure_ask(st.session_state.messages):
         full_response += response
         message_placeholder.markdown(full_response + "▌")
+    json_response = json.loads(full_response)
+    db_name = ""
+    channel = ""
+    if json_response['response'].get('dbCheck') !='Yes':
+        #TODO: 不查询数据库
+        pass
+    else:
+        db_name = json_response['response'].get('dbName')
+        keywods = json_response['response'].get('keywords')
+        channel = Channel(db_name)
+        # print(channel.database_schema_string)
+
     message_placeholder.markdown(full_response)
+    if db_name:
+        message_placeholder.markdown(full_response+"  ▌  "+f"【{db_name}】 tables is 【" + ','.join(channel.target_tables).strip(',') + "】")
+
     st.session_state.messages.append({"role": "assistant", "content": full_response})
