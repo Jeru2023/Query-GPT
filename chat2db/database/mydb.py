@@ -10,7 +10,7 @@ class MyDB:
         self.config.read(config_path, encoding='utf-8-sig')
 
     # database connection
-    def get_connection(self):
+    def get_engine(self):
         user = self.config.get('DB', 'user')
         password = self.config.get('DB', 'password')
         host = self.config.get('DB', 'host')    
@@ -21,7 +21,9 @@ class MyDB:
         return create_engine(conn_url, pool_size=20, max_overflow=50, pool_recycle=30)
         
     def get_ddl(self):
-        engine = self.get_connection()
-        sql = "SELECT table_name FROM all_tables"
+        engine = self.get_engine()
+        conn = engine.connect()
+
+        sql = "SELECT * FROM industry"
         df = pd.read_sql_query(sql, engine)
         return df
