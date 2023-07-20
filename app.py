@@ -2,19 +2,19 @@ import streamlit as st
 import openai
 import os
 
+from chat2db.chat.azure import Azure
 from chat2db.prompts import load_prompt
-
 
 st.title("Query GPT")
 
-openai.api_version = "2023-05-15"
-openai.api_type = "azure"
-# Set OpenAI API key and base from Streamlit secrets
-openai.api_key = st.secrets["OPENAI_API_KEY"]
-openai.api_base = st.secrets["OPENAI_API_BASE"]
+# openai.api_version = "2023-05-15"
+# openai.api_type = "azure"
+# # Set OpenAI API key and base from Streamlit secrets
+# openai.api_key = st.secrets["OPENAI_API_KEY"]
+# openai.api_base = st.secrets["OPENAI_API_BASE"]
 
 # Initialize chat history with system prompt
-#if "messages" not in st.session_state:
+# if "messages" not in st.session_state:
 #    st.session_state.messages = []
 
 if 'messages' not in st.session_state:
@@ -34,7 +34,6 @@ if prompt := st.chat_input("What's your question?"):
     # Display user message in chat message container
     with st.chat_message("user"):
         st.markdown(prompt)
-
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
         ### print out the origin question
@@ -42,13 +41,10 @@ if prompt := st.chat_input("What's your question?"):
 
         message_placeholder = st.empty()
         full_response = ""
-
-    for response in openai.ChatCompletion.create(
-        engine ="gz_0613",
-        messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages],
-        stream=True,
-    ):
-        full_response += response.choices[0].delta.get("content", "")
+    azure = Azure(st.secrets["OPENAI_API_KEY"], st.secrets["OPENAI_API_BASE"], st.secrets["ENGINE"])
+    azure.azure_ask(st.session_state.messages)
+    for response in azure.azure_ask(st.session_state.messages):
+        full_response += response
         message_placeholder.markdown(full_response + "▌")
     message_placeholder.markdown(full_response)
     st.session_state.messages.append({"role": "assistant", "content": full_response})
