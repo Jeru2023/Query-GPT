@@ -5,7 +5,7 @@ import configparser as cp
 from urllib.parse import quote_plus as urlquote
  
 
-class MyDB:
+class MySQLDB:
     def __init__(self, config_path='./chat2db/config/sphinx.config'):
         self.config_path = config_path
         
