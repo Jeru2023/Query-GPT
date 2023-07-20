@@ -16,8 +16,18 @@ class Azure():
                 messages=[{"role": m["role"], "content": m["content"]} for m in messages],
                 stream=True,
         ):
+            print(response)
             full_response = response.choices[0].delta.get("content", "")
             yield full_response
+
+    def used_db(self):
+        pass
+
+    def choice_db(self):
+        pass
+
+    def keyword_extract(self):
+        pass
 
 
 if __name__ == '__main__':
