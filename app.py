@@ -10,9 +10,14 @@ openai.api_type = "azure"
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 openai.api_base = st.secrets["OPENAI_API_BASE"]
 
-# Initialize chat history
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+# Initialize chat history with system prompt
+#if "messages" not in st.session_state:
+#    st.session_state.messages = []
+
+if 'messages' not in st.session_state:
+    st.session_state['messages'] = [
+        {"role": "system", "content": "You are a helpful assistant."}
+    ]
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
@@ -34,8 +39,6 @@ if prompt := st.chat_input("What's your question?"):
 
         message_placeholder = st.empty()
         full_response = ""
-        
-        
 
     for response in openai.ChatCompletion.create(
         engine ="gz_0613",

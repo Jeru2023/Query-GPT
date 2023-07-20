@@ -1,0 +1,16 @@
+{
+    "prompt": "",
+    "response": {
+        "dbCheck": "",
+        "dbName": "",
+        "keywords": [
+            {
+                "word": "",
+                "type": ""
+            }
+        ],
+        "sqlTasks": [
+            ""
+        ]
+    }
+}
