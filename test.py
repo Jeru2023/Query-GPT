@@ -4,7 +4,8 @@ from chat2db.database.mydb import MyDB
 #print(load_prompt("router"))
 
 mydb = MyDB()
-mydb.get_ddl().head()
+df = mydb.get_dummy()
+print(df.head())
 
 
 

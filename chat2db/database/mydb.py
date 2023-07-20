@@ -1,6 +1,9 @@
 import pandas as pd
 from sqlalchemy import create_engine
+from sqlalchemy import text
 import configparser as cp
+from urllib.parse import quote_plus as urlquote
+ 
 
 class MyDB:
     def __init__(self, config_path='./chat2db/config/sphinx.config'):
@@ -12,7 +15,8 @@ class MyDB:
     # database connection
     def get_engine(self):
         user = self.config.get('DB', 'user')
-        password = self.config.get('DB', 'password')
+        password = urlquote(self.config.get('DB', 'password'))
+
         host = self.config.get('DB', 'host')    
         port = self.config.get('DB', 'port')
         database = self.config.get('DB', 'database')
@@ -20,10 +24,10 @@ class MyDB:
         conn_url = 'mysql+pymysql://{}:{}@{}:{}/{}'.format(user, password, host, port, database)
         return create_engine(conn_url, pool_size=20, max_overflow=50, pool_recycle=30)
         
-    def get_ddl(self):
+    def get_dummy(self):
         engine = self.get_engine()
         conn = engine.connect()
 
-        sql = "SELECT * FROM industry"
-        df = pd.read_sql_query(sql, engine)
+        sql = text("select count(*) from stock_code")
+        df = pd.read_sql_query(sql, conn)
         return df
