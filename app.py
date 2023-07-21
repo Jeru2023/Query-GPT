@@ -32,6 +32,7 @@ if prompt := st.chat_input("What's your question?"):
         ### print out the origin question
         st.markdown(f"Your question is: **:blue[{prompt}]**")
         message_placeholder = st.empty()
+        message_placeholder_chart = st.empty()
         analysis_response = ""
 
     azure = Azure(st.secrets["OPENAI_API_KEY"], st.secrets["OPENAI_API_BASE"], st.secrets["ENGINE"])
@@ -91,12 +92,15 @@ if prompt := st.chat_input("What's your question?"):
         output += step3
 
         output += f"**:blue[SQL]**: {sql[0]}\n\n"
-        message_placeholder.markdown(output + "▌")
+        message_placeholder.markdown(output )
 
         sql_result = channel.ask_database(sql[0])
-        output += f"**:blue[SQL Result]**: {sql_result}\n\n"
-        message_placeholder.markdown(output + "▌")
-        st.write(sql_result)
+        # output += f"**:blue[SQL Result]**: {sql_result}\n\n"
+        message_placeholder.markdown(output)
+        output += f"**:blue[SQL RESULT]**:\n\n"
+        message_placeholder.markdown(output)
+
+        message_placeholder_chart.table(sql_result)
 
         # output += query_response
         # message_placeholder.markdown(output + "▌")
