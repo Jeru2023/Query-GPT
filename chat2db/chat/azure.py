@@ -15,19 +15,16 @@ class Azure():
                 engine=self.engine,
                 messages=[{"role": m["role"], "content": m["content"]} for m in messages],
                 stream=True,
+                temperature=0,
         ):
-            print(response)
             full_response = response.choices[0].delta.get("content", "")
             yield full_response
+        # response = openai.ChatCompletion.create(
+        #     engine=self.engine,
+        #     messages=[{"role": m["role"], "content": m["content"]} for m in messages],
+        # )
+        # return response.choices[0].message.get("content", "")
 
-    def used_db(self):
-        pass
-
-    def choice_db(self):
-        pass
-
-    def keyword_extract(self):
-        pass
 
 
 if __name__ == '__main__':

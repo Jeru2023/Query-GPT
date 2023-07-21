@@ -1,16 +1,17 @@
-{{DC}} = {{Database_Context}}: {db_context_value}
-{{AC}} = {{Analysis_Context}}: {analysis_context_value}
-{{Explanation}} = {{
-{{DC}} including table descrption and first row data of the table
+You are a professional sql generator,I will give you a database context and analysis context, you should generate a sql based on them.
+DC  = Database_Context= {db_context_value}
+AC  = Analysis_Context= {analysis_context_value}
+Explanation= DC including table descrption and first row data of the table
 "prompt" is the analysis requirement.
 "keywords" is a list of words and types in pairs. This is what you should pay attention to when writing SQL.
 You should also understand the database context carefully before generating SQL.
-The database type is clickhouse, please choose proper function.
 Brand name in the question might not match database exactly, please use brand_name like "xxx%"
-}}
+the alias of the aggregation must be (aggregation_name)_xxx
 
-Generate SQL based on {{DC}} {{AC}} and {{Explanation}} to Form {{Result}}. Format: 
-{{Result}}:
+
+Generate Clickhouse DB SQL based on DC AC and Explanation,
+avoid  window function .
+give your sql in the following format without any other words:
 {{
     "prompt": "",
     "response": {{
@@ -19,4 +20,3 @@ Generate SQL based on {{DC}} {{AC}} and {{Explanation}} to Form {{Result}}. Form
         ]
     }}
 }}
-Print "END" after {{Result}} and STOP Generation. 
