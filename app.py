@@ -42,7 +42,8 @@ if prompt := st.chat_input("What's your question?"):
 
     for response in azure.azure_ask(st.session_state.messages):
         analysis_response += response
-
+        # message_placeholder.markdown(full_response + "▌")
+    # print(full_response)
     json_response = json.loads(analysis_response)
 
     if json_response['response'].get('dbCheck') != 'Yes':
@@ -50,7 +51,7 @@ if prompt := st.chat_input("What's your question?"):
         pass
     else:
         db_name = json_response['response'].get('dbName')
-        keywods = [i for i in json_response['response'].get('keywords') ]
+        keywods = [i for i in json_response['response'].get('keywords')]
         channel = Channel(db_name)
 
         step1 = '### **Step 1: Analysis prompt generates [Analysis Context]**\n'
@@ -74,15 +75,29 @@ if prompt := st.chat_input("What's your question?"):
             {"role": "user", "content": prompt},
         ]
 
+        # full_response += str(db_system_prompt)
+        # full_response += "\n\n"
+        # message_placeholder.markdown(full_response)
+
         query_response = ''
         for response in azure.azure_ask(db_system_prompt):
             query_response += response
+        json_response = json.loads(query_response)  # db查询的结果
+        sql = json_response.get('response').get('sqlQueries')
 
-        # query_response = azure.azure_ask(db_system_prompt)
-        message_placeholder.markdown(output + "▌")
 
         output += "\n\n"
         step3 = '### **Step 3: Query prompt generates SQL based on [Database Context] and [Analysis Context]**\n'
         output += step3
-        output += query_response
+
+        output += f"**:blue[SQL]**: {sql[0]}\n\n"
         message_placeholder.markdown(output + "▌")
+
+        sql_result = channel.ask_database(sql[0])
+        output += f"**:blue[SQL Result]**: {sql_result}\n\n"
+        message_placeholder.markdown(output + "▌")
+        st.write(sql_result)
+
+        # output += query_response
+        # message_placeholder.markdown(output + "▌")
+    # st.session_state.messages.append({"role": "assistant", "content": full_response})

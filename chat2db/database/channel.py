@@ -78,7 +78,7 @@ class Channel():
         """Return a list of column names."""
         df = self.clickhouse_.click_read_sql(
             f"select distinct name,type  from system.columns where database='{self.db_name}' and table='{table_name}' ")
-        return [f"{name}({type})" for name, type in zip(df['name'], df['type'])  ]
+        return [f"{name}({type})" for name, type in zip(df['name'], df['type'])]
 
     def get_database_info(self):
         """Return a list of dicts containing the table name and columns for each table in the database."""
@@ -103,6 +103,14 @@ class Channel():
             for k, v in item.items():
                 ls.append(f'字段[{k}]的demo数据为[{v}]')
         return ls
+
+    def ask_database(self, query):
+        """Function to query SQLite database with a provided SQL query."""
+        try:
+            results = self.clickhouse_.click_read_sql(query)
+        except Exception as e:
+            results = f"query failed with error: {e}"
+        return results
 
 
 if __name__ == '__main__':
