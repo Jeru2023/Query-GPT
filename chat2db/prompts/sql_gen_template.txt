@@ -4,6 +4,9 @@
 {{DC}} including table descrption and first row data of the table
 "prompt" is the analysis requirement.
 "keywords" is a list of words and types in pairs. This is what you should pay attention to when writing SQL.
+You should also understand the database context carefully before generating SQL.
+The database type is clickhouse, please choose proper function.
+Brand name in the question might not match database exactly, please use brand_name like "xxx%"
 }}
 
 Generate SQL based on {{DC}} {{AC}} and {{Explanation}} to Form {{Result}}. Format: 
