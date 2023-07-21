@@ -27,4 +27,4 @@ Where:
 - "dbName" specifies which database to query if dbCheck is Yes
 - "keywords" lists extracted keywords from the prompt
 - "word" is the extracted keyword
-- "type" is the keyword type, including: time frame，channel，region, brand, category, indicator and others.
+- "type" is the keyword type, including: time frame，channel，region, brand, category, indicators, others.

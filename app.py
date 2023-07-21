@@ -43,7 +43,7 @@ if prompt := st.chat_input("What's your question?"):
     for response in azure.azure_ask(st.session_state.messages):
         analysis_response += response
         #message_placeholder.markdown(full_response + "▌")
-    #print(full_response)
+
     json_response = json.loads(analysis_response)
 
     if json_response['response'].get('dbCheck') != 'Yes':
@@ -83,6 +83,7 @@ if prompt := st.chat_input("What's your question?"):
         query_response = ''
         for response in azure.azure_ask(db_system_prompt):
             query_response += response
+        query_response = response.choices[0]
 
         output += "\n\n"
         step3 = '### **Step 3: Query prompt generates SQL based on [Database Context] and [Analysis Context]**\n'
