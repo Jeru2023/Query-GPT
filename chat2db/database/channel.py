@@ -2,7 +2,7 @@ import configparser
 import json
 import os
 
-from  .db_connector import DbConnector
+from .db_connector import DbConnector
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -76,9 +76,9 @@ class Channel():
 
     def get_column_names(self, table_name):
         """Return a list of column names."""
-        columns = self.clickhouse_.click_read_sql(
-            f"select distinct name from system.columns where database='{self.db_name}' and table='{table_name}' ")
-        return columns['name'].to_list()
+        df = self.clickhouse_.click_read_sql(
+            f"select distinct name,type  from system.columns where database='{self.db_name}' and table='{table_name}' ")
+        return [f"{name}({type})" for name, type in zip(df['name'], df['type'])  ]
 
     def get_database_info(self):
         """Return a list of dicts containing the table name and columns for each table in the database."""
@@ -101,10 +101,11 @@ class Channel():
         ls = []
         for item in data.to_dict(orient='records'):
             for k, v in item.items():
-                ls.append(f'字段[{k}]的demo数据为[{v}];')
+                ls.append(f'字段[{k}]的demo数据为[{v}]')
         return ls
 
 
 if __name__ == '__main__':
     channel = Channel(db_name='tmall_pc')
+    # print(channel.get_column_names('ai_tmall_pc'))
     print(channel.database_schema_string)
