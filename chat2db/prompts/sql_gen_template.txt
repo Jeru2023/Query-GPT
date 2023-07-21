@@ -1,0 +1,19 @@
+{DC} = {Database_Context}: {{db_context_value}}
+{AC} = {Analysis_Context}: {{analysis_context_value}}
+{Explanation} = {
+{DC} including table descrption and first row data of the table
+"prompt" is the analysis requirement.
+"keywords" is a list of words and types in pairs. This is what you should pay attention to when writing SQL.
+}
+
+Generate SQL based on {DC} {AC} and {Explanation} to Form {Result}. Format: 
+{Result}:
+{
+    "prompt": "",
+    "response": {
+        "sqlQueries": [
+              ""
+        ]
+    }
+}
+Print "END" after {Result} and STOP Generation. 
