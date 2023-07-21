@@ -94,6 +94,9 @@ if prompt := st.chat_input("What's your question?"):
         message_placeholder.markdown(output + "▌")
 
         sql_result = channel.ask_database(sql[0])
+
+        step4 = '### ** Step 4: Display query result with text and table**\n'
+        output += step4
         output += f"**:blue[SQL Result]**: {sql_result}\n\n"
         message_placeholder.markdown(output + "▌")
         st.write(sql_result)
