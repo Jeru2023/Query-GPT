@@ -6,6 +6,7 @@ from chat2db.chat.azure import Azure
 from chat2db.database.channel import Channel
 from chat2db.prompts import load_prompt
 import chat2db.utils as U
+from streamlit_echarts import st_echarts
 
 st.title("Query GPT")
 
@@ -115,4 +116,17 @@ if prompt := st.chat_input("What's your question?"):
         message_placeholder.markdown(output)
 
         message_placeholder_chart.table(sql_result)
+
+        ### TODO: based on chart_type and multi_series dynamically draw the chart.
+        options = {
+            "xAxis": {
+                "type": "category",
+                "data": sql_result['month'].tolist(),
+            },
+            "yAxis": {"type": "value"},
+            "series": [
+                {"data": sql_result['total_sales_amount'].tolist(), "type": "line"}
+            ],
+        }
+        st_echarts(options=options)
         #print(output)
