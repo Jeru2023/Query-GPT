@@ -47,6 +47,7 @@ if prompt := st.chat_input("What's your question?"):
         # TODO: 不查询数据库
         pass
     else:
+        print(f"response is：{json_response['response']}")
         db_name = json_response['response'].get('dbName')
         keywods = [i for i in json_response['response'].get('keywords')]
         channel = Channel(db_name)
@@ -98,21 +99,20 @@ if prompt := st.chat_input("What's your question?"):
         sql_result = channel.ask_database(sql[0])
         # output += f"**:blue[SQL Result]**: {sql_result}\n\n"
 
-        print(f"analysis context is: {analysis_context}")
+        #print(f"analysis context is: {analysis_context}")
+        print(f"sql result is: {sql_result}")
+
+        # calculate and print number of indicators and number of rows
+        #row_count = U.count_row_number(sql_result.size)
         indicators_count = U.count_indicators(analysis_context)
+        chart_type = U.get_chart_type(analysis_context)
         output += f"**:red[Number of Indicators]**: {indicators_count}\n\n"
-        
+        output += f"**:red[Number of Rows]**: {sql_result.size}\n\n"
+        output += f"**:red[Chart Type]**: {chart_type}\n\n"
         output += f"**:blue[SQL RESULT]**:\n\n"
 
 
         message_placeholder.markdown(output)
 
         message_placeholder_chart.table(sql_result)
-        print(output)
-
-        
-
-
-        # output += query_response
-        # message_placeholder.markdown(output + "▌")
-    # st.session_state.messages.append({"role": "assistant", "content": full_response})
+        #print(output)

@@ -6,7 +6,7 @@ jd_pc: 京东数据库, 保存品牌/品牌类/商品每个月的销售数据
 dianping: 大众点评数据库, 保存品牌每个月的门店数量
 sphinx: A股数据库，保存每日交易数据
 
-json fromat:
+json format:
 {
     "prompt": "",
     "response": {
@@ -18,6 +18,7 @@ json fromat:
                 "type": ""
             }
         ],
+        "chart_type": ""
     }
 }
 
@@ -28,3 +29,4 @@ Where:
 - "keywords" lists extracted keywords from the prompt
 - "word" is the extracted keyword
 - "type" is the keyword type, including: time frame，channel，region, brand, category, indicators, others.
+- "chart_type" indicates which chart type fits search result best, options are: line, bar, pie, none.

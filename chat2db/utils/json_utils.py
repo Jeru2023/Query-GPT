@@ -1,4 +1,5 @@
 import json
+import csv
 
 def count_indicators(data):
     data = json.loads(data)
@@ -10,3 +11,18 @@ def count_indicators(data):
             indicators_count += 1
     
     return indicators_count
+
+def count_row_number(result):
+    reader = csv.reader(result.split('\n'))
+    next(reader) # 跳过标题行
+
+    count = 0
+    for row in reader:
+        count += 1
+
+    return count
+
+def get_chart_type(data):
+    data = json.loads(data)
+    chart_type = data['response']['chart_type']
+    return chart_type
