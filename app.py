@@ -7,6 +7,7 @@ from chat2db.database.channel import Channel
 from chat2db.prompts import load_prompt
 import chat2db.utils as U
 from streamlit_echarts import st_echarts
+from chat2db.chart import echarts
 
 st.title("Query GPT")
 
@@ -82,6 +83,7 @@ if prompt := st.chat_input("What's your question?"):
         query_response = ''
         for response in azure.azure_ask(db_system_prompt):
             query_response += response
+        print(f"query_response is {query_response}")
         json_response = json.loads(query_response)  # db查询的结果
         sql = json_response.get('response').get('sqlQueries')
 
@@ -107,26 +109,16 @@ if prompt := st.chat_input("What's your question?"):
         #row_count = U.count_row_number(sql_result.size)
         indicators_count = U.count_indicators(analysis_context)
         chart_type = U.get_chart_type(analysis_context)
-        output += f"**:red[Number of Indicators]**: {indicators_count}\n\n"
-        output += f"**:red[Number of Rows]**: {sql_result.size}\n\n"
+        multi_series = U.get_multi_series(analysis_context)
+
+        #output += f"**:red[Number of Indicators]**: {indicators_count}\n\n"
+        #output += f"**:red[Number of Rows]**: {sql_result.size}\n\n"
         output += f"**:red[Chart Type]**: {chart_type}\n\n"
+        output += f"**:red[Multi Series]**: {multi_series}\n\n"
         output += f"**:blue[SQL RESULT]**:\n\n"
 
 
         message_placeholder.markdown(output)
 
         message_placeholder_chart.table(sql_result)
-
-        ### TODO: based on chart_type and multi_series dynamically draw the chart.
-        options = {
-            "xAxis": {
-                "type": "category",
-                "data": sql_result['month'].tolist(),
-            },
-            "yAxis": {"type": "value"},
-            "series": [
-                {"data": sql_result['total_sales_amount'].tolist(), "type": "line"}
-            ],
-        }
-        st_echarts(options=options)
-        #print(output)
+        echarts.render_chart(sql_result, chart_type, multi_series)
