@@ -2,7 +2,7 @@ import configparser
 import json
 import os
 
-from .db_connector import DbConnector
+from  .db_connector import DbConnector
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -34,7 +34,7 @@ class Channel():
         """
         return "\n".join(
             [
-                f"Table: {table['table_name']}\nColumns: {', '.join(table['column_names'])}\n Demo Data: {', '.join(table['demo_data'])}"
+                f"Table: {table['table_name']}\nColumns: {', '.join(table['column_names'])}\nThe first rows look like this:  ({table['demo_data']})"
                 for table in self.get_database_info()
             ]
         )
@@ -98,11 +98,11 @@ class Channel():
         """
         data = self.clickhouse_.click_read_sql(
             f"select  * from {table_name} limit 1 ")
-        ls = []
-        for item in data.to_dict(orient='records'):
-            for k, v in item.items():
-                ls.append(f'字段[{k}]的demo数据为[{v}]')
-        return ls
+        # ls = []
+        # for item in data.to_dict(orient='records'):
+        #     for k, v in item.items():
+        #         ls.append(f'字段[{k}]的demo数据为[{v}]')
+        return ','.join([v for v in data.to_dict(orient='records')[0].values()])
 
     def ask_database(self, query):
         """Function to query SQLite database with a provided SQL query."""
@@ -115,5 +115,5 @@ class Channel():
 
 if __name__ == '__main__':
     channel = Channel(db_name='tmall_pc')
-    # print(channel.get_column_names('ai_tmall_pc'))
+    # print(channel.get_table_demo_data('ai_tmall_pc'))
     print(channel.database_schema_string)

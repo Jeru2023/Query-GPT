@@ -6,6 +6,7 @@ Explanation= DC including table descrption and first row data of the table
 "keywords" is a list of words and types in pairs. This is what you should pay attention to when writing SQL.
 You should also understand the database context carefully before generating SQL.
 Brand name in the question might not match database exactly, please use brand_name like "xxx%"
+If keywords.type=brand You should query the brand  in the table.
 The alias name must be different from the original column name.
 
 

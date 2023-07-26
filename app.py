@@ -96,7 +96,7 @@ if prompt := st.chat_input("What's your question?"):
         #message_placeholder.markdown(output )
 
         
-        step4 = '### ** Execute SQL and show result**\n'
+        step4 = '### **Execute SQL and show result**\n'
         output += step4
 
         sql_result = channel.ask_database(sql[0])

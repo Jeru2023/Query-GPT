@@ -26,7 +26,6 @@ class Azure():
         # return response.choices[0].message.get("content", "")
 
 
-
 if __name__ == '__main__':
     azure = Azure("ced27977c8aa4c03b037bd5c0c0572b0", "https://gz-uk-0613.openai.azure.com/", "gz_0613")
     for i in azure.azure_ask([{"role": "user", "content": "写一个hello world程序"}]):
